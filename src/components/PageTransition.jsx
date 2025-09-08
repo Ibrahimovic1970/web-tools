@@ -10,7 +10,7 @@ export default function PageTransition({ children }) {
         const ctx = gsap.context(() => {
             // Animasi keluar halaman lama
             gsap.to(pageRef.current, {
-                opacity: 0,
+                opacity: 1,
                 y: 20,
                 duration: 0.4,
                 ease: "power2.in"

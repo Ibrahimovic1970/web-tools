@@ -2,77 +2,79 @@ import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
 export default function Base64Converter() {
-    const [text, setText] = useState('');
-    const [result, setResult] = useState('');
+    const [input, setInput] = useState('');
+    const [output, setOutput] = useState('');
+    const [mode, setMode] = useState('encode');
     const containerRef = useRef();
 
     useEffect(() => {
-        // Animasi saat halaman muncul
         gsap.fromTo(containerRef.current,
             { opacity: 0, y: 30 },
             { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
         );
     }, []);
 
-    const encode = () => {
-        if (!text) return;
-        setResult(btoa(text));
-    };
-
-    const decode = () => {
-        if (!result) return;
+    const convert = () => {
         try {
-            setText(atob(result));
-        } catch (e) {
-            alert("Invalid Base64");
+            if (mode === 'encode') {
+                setOutput(btoa(input));
+            } else {
+                setOutput(atob(input));
+            }
+        } catch {
+            setOutput('Error: Input tidak valid');
         }
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12">
-            <div ref={containerRef} className="max-w-3xl mx-auto px-6">
+        <div className="min-h-screen bg-gray-50 py-12" ref={containerRef}>
+            <div className="max-w-3xl mx-auto px-6">
                 <div className="bg-white p-8 rounded-xl shadow-lg">
                     <h1 className="text-3xl font-bold mb-2 text-center">Base64 Converter</h1>
                     <p className="text-gray-600 mb-8 text-center">
-                        Encode/decode teks ke Base64.
+                        Encode atau decode teks ke Base64.
                     </p>
 
                     <div className="mb-6">
-                        <label className="block text-sm font-medium mb-2">Teks</label>
+                        <label className="block text-sm font-medium mb-2">Mode</label>
+                        <select
+                            value={mode}
+                            onChange={(e) => setMode(e.target.value)}
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        >
+                            <option value="encode">Encode (Teks → Base64)</option>
+                            <option value="decode">Decode (Base64 → Teks)</option>
+                        </select>
+                    </div>
+
+                    <div className="mb-6">
+                        <label className="block text-sm font-medium mb-2">Input</label>
                         <textarea
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                            className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                            rows="3"
-                            placeholder="Masukkan teks..."
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            placeholder="Masukkan teks atau Base64..."
+                            rows="4"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         />
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button
-                            onClick={encode}
-                            disabled={!text}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition disabled:opacity-50"
-                        >
-                            📤 Encode
-                        </button>
-                        <button
-                            onClick={decode}
-                            disabled={!result}
-                            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition disabled:opacity-50"
-                        >
-                            📥 Decode
-                        </button>
-                    </div>
+                    <button
+                        onClick={convert}
+                        disabled={!input}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition disabled:opacity-50 mb-6"
+                    >
+                        🔁 Konversi
+                    </button>
 
-                    {result && (
-                        <div className="mt-6 p-4 bg-gray-100 rounded-lg">
-                            <p><strong>Hasil:</strong></p>
-                            <pre className="mt-2 bg-black text-green-400 p-3 rounded text-xs overflow-x-auto">
-                                {result}
-                            </pre>
-                        </div>
-                    )}
+                    <div className="mb-6">
+                        <label className="block text-sm font-medium mb-2">Output</label>
+                        <textarea
+                            value={output}
+                            readOnly
+                            rows="4"
+                            className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100"
+                        />
+                    </div>
                 </div>
             </div>
         </div>

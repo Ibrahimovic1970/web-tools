@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import html2canvas from 'html2canvas';
 
 export default function TandaTanganGenerator() {
     const [isDrawing, setIsDrawing] = useState(false);
     const canvasRef = useRef();
 
     useEffect(() => {
-        const ctx = canvasRef.current.getContext('2d');
-        ctx.lineWidth = 2;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = '#000';
+        gsap.fromTo(canvasRef.current,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+        );
     }, []);
 
     const startDrawing = (e) => {
@@ -37,11 +39,14 @@ export default function TandaTanganGenerator() {
     };
 
     const downloadSignature = () => {
-        const dataUrl = canvasRef.current.toDataURL('image/png');
-        const a = document.createElement('a');
-        a.href = dataUrl;
-        a.download = 'tanda-tangan.png';
-        a.click();
+        const canvas = canvasRef.current;
+        html2canvas(canvas, { backgroundColor: null }).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const a = document.createElement('a');
+            a.href = imgData;
+            a.download = 'tanda-tangan.png';
+            a.click();
+        });
     };
 
     return (
@@ -63,6 +68,7 @@ export default function TandaTanganGenerator() {
                             onMouseMove={draw}
                             onMouseUp={stopDrawing}
                             onMouseLeave={stopDrawing}
+                            style={{ border: '2px solid #ddd' }}
                         />
                     </div>
 

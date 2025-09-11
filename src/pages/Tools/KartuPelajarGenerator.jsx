@@ -1,4 +1,3 @@
-// ✅ PENTING: Tambahkan ini di baris pertama
 import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import html2canvas from 'html2canvas';
@@ -13,7 +12,7 @@ export default function KartuPelajarGenerator() {
     const containerRef = useRef();
     const cardRef = useRef();
 
-    // Animasi saat muncul
+    // Animasi saat halaman muncul
     useEffect(() => {
         gsap.fromTo(containerRef.current,
             { opacity: 0, y: 30 },
@@ -41,7 +40,7 @@ export default function KartuPelajarGenerator() {
             const imgData = canvas.toDataURL('image/png');
             const a = document.createElement('a');
             a.href = imgData;
-            a.download = `kartu-pelajar-${nama}.png`;
+            a.download = `kartu-pelajar-${nama || 'siswa'}.png`;
             a.click();
         });
     };

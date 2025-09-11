@@ -9,7 +9,6 @@ export default function PasswordStrengthChecker() {
   const progressBarRef = useRef();
 
   useEffect(() => {
-    // Animasi saat halaman muncul
     gsap.fromTo(containerRef.current,
       { opacity: 0, y: 30 },
       { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
@@ -26,35 +25,20 @@ export default function PasswordStrengthChecker() {
     let score = 0;
     const fb = [];
 
-    if (password.length >= 8) {
-      score += 1;
-    } else {
-      fb.push('Minimal 8 karakter');
-    }
+    if (password.length >= 8) score += 1;
+    else fb.push('Minimal 8 karakter');
 
-    if (/[A-Z]/.test(password)) {
-      score += 1;
-    } else {
-      fb.push('Huruf besar (A-Z)');
-    }
+    if (/[A-Z]/.test(password)) score += 1;
+    else fb.push('Huruf besar (A-Z)');
 
-    if (/[a-z]/.test(password)) {
-      score += 1;
-    } else {
-      fb.push('Huruf kecil (a-z)');
-    }
+    if (/[a-z]/.test(password)) score += 1;
+    else fb.push('Huruf kecil (a-z)');
 
-    if (/[0-9]/.test(password)) {
-      score += 1;
-    } else {
-      fb.push('Angka (0-9)');
-    }
+    if (/[0-9]/.test(password)) score += 1;
+    else fb.push('Angka (0-9)');
 
-    if (/[^A-Za-z0-9]/.test(password)) {
-      score += 1;
-    } else {
-      fb.push('Simbol (!@#$%)');
-    }
+    if (/[^A-Za-z0-9]/.test(password)) score += 1;
+    else fb.push('Simbol (!@#$%)');
 
     setScore(score);
     setFeedback(fb);
@@ -67,17 +51,17 @@ export default function PasswordStrengthChecker() {
     });
   }, [password]);
 
-  const getStrengthLabel = () => {
+  const getStrength = () => {
     if (score <= 2) return { label: 'Lemah', color: 'bg-red-500' };
     if (score === 3) return { label: 'Sedang', color: 'bg-yellow-500' };
-    if (score >= 4) return { label: 'Kuat', color: 'bg-green-500' };
+    return { label: 'Kuat', color: 'bg-green-500' };
   };
 
-  const strength = getStrengthLabel();
+  const strength = getStrength();
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div ref={containerRef} className="max-w-3xl mx-auto px-6">
+    <div className="min-h-screen bg-gray-50 py-12" ref={containerRef}>
+      <div className="max-w-3xl mx-auto px-6">
         <div className="bg-white p-8 rounded-xl shadow-lg">
           <h1 className="text-3xl font-bold mb-2 text-center">Password Strength Checker</h1>
           <p className="text-gray-600 mb-8 text-center">
@@ -99,14 +83,14 @@ export default function PasswordStrengthChecker() {
             <div className="mb-6">
               <div className="flex justify-between mb-1">
                 <span className="text-sm font-medium">Kekuatan</span>
-                <span className={`text-sm font-medium ${score <= 2 ? 'text-red-600' : score === 3 ? 'text-yellow-600' : 'text-green-600'}`}>
+                <span className={`text-sm font-medium ${strength.color === 'bg-red-500' ? 'text-red-600' : strength.color === 'bg-yellow-500' ? 'text-yellow-600' : 'text-green-600'}`}>
                   {strength.label}
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2.5">
                 <div
                   ref={progressBarRef}
-                  className={`h-2.5 rounded-full ${strength.color} transition-all duration-500`}
+                  className={`h-2.5 rounded-full ${strength.color} transition-all duration-300`}
                   style={{ width: '0%' }}
                 ></div>
               </div>

@@ -1,15 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { gsap } from 'gsap';
 import html2canvas from 'html2canvas';
 
 export default function JadwalPelajaranGenerator() {
-    const [hari, setHari] = useState({
-        senin: [],
-        selasa: [],
-        rabu: [],
-        kamis: [],
-        jumat: [],
-    });
+    const [hari, setHari] = useState({ senin: [], selasa: [], rabu: [], kamis: [], jumat: [] });
     const [mapel, setMapel] = useState('');
     const [jam, setJam] = useState('');
     const [hariInput, setHariInput] = useState('senin');
@@ -61,7 +55,6 @@ export default function JadwalPelajaranGenerator() {
                     </p>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {/* Form Input */}
                         <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium mb-2">Mata Pelajaran</label>
@@ -73,7 +66,6 @@ export default function JadwalPelajaranGenerator() {
                                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                 />
                             </div>
-
                             <div>
                                 <label className="block text-sm font-medium mb-2">Jam</label>
                                 <input
@@ -84,7 +76,6 @@ export default function JadwalPelajaranGenerator() {
                                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                 />
                             </div>
-
                             <div>
                                 <label className="block text-sm font-medium mb-2">Hari</label>
                                 <select
@@ -99,7 +90,6 @@ export default function JadwalPelajaranGenerator() {
                                     <option value="jumat">Jumat</option>
                                 </select>
                             </div>
-
                             <button
                                 onClick={tambahMapel}
                                 disabled={!mapel || !jam}
@@ -107,7 +97,6 @@ export default function JadwalPelajaranGenerator() {
                             >
                                 ➕ Tambah Mapel
                             </button>
-
                             <button
                                 onClick={downloadJadwal}
                                 className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition mt-2"
@@ -116,7 +105,6 @@ export default function JadwalPelajaranGenerator() {
                             </button>
                         </div>
 
-                        {/* Preview Jadwal */}
                         <div className="flex justify-center">
                             <div
                                 ref={scheduleRef}
@@ -124,19 +112,15 @@ export default function JadwalPelajaranGenerator() {
                             >
                                 <div className="bg-blue-600 text-white p-4 text-center">
                                     <h3 className="font-bold text-lg">JADWAL PELAJARAN</h3>
-                                    <p className="text-sm">SMK TI BAZMA</p>
+                                    <p className="text-sm">SMK NEGERI 1 TEKNOLOGI INFORMATIKA</p>
                                 </div>
-
-                                {Object.entries(hari).map(([day, classes]) => (
+                                {Object.entries(hari).map(([day, classes]) =>
                                     classes.length > 0 && (
                                         <div key={day} className="p-4 border-b border-gray-200">
                                             <h4 className="font-semibold capitalize text-gray-800 mb-2">{day}</h4>
                                             <div className="space-y-2">
                                                 {classes.map((cls, i) => (
-                                                    <div
-                                                        key={i}
-                                                        className="flex justify-between items-center p-2 bg-gray-100 rounded text-sm"
-                                                    >
+                                                    <div key={i} className="flex justify-between items-center p-2 bg-gray-100 rounded text-sm">
                                                         <span>{cls.mapel}</span>
                                                         <span className="text-xs text-gray-600">{cls.jam}</span>
                                                         <button
@@ -150,7 +134,7 @@ export default function JadwalPelajaranGenerator() {
                                             </div>
                                         </div>
                                     )
-                                ))}
+                                )}
                             </div>
                         </div>
                     </div>

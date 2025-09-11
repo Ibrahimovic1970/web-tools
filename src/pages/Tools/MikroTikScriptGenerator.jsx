@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
 export default function MikroTikScriptGenerator() {
-    const [scriptType, setScriptType] = useState('queue');
-    const [targetIp, setTargetIp] = useState('');
+    const [queueName, setQueueName] = useState('Download');
+    const [target, setTarget] = useState('192.168.1.0/24');
     const [maxLimit, setMaxLimit] = useState('1M/1M');
-    const [comment, setComment] = useState('');
+    const [burstLimit, setBurstLimit] = useState('2M/2M');
     const containerRef = useRef();
 
     useEffect(() => {
@@ -16,60 +16,55 @@ export default function MikroTikScriptGenerator() {
     }, []);
 
     const generateScript = () => {
-        let script = '';
-        if (scriptType === 'queue') {
-            script = `/queue simple add name="${comment || 'User-Queue'}" target=${targetIp} max-limit=${maxLimit}`;
-        } else if (scriptType === 'firewall') {
-            script = `/ip firewall filter add action=drop src-address=${targetIp} comment="${comment || 'Block IP'}"`;
-        } else if (scriptType === 'hotspot') {
-            script = `/ip hotspot user add name="${comment || 'Hotspot-User'}" password="123456" profile=default`;
-        }
-        return script;
+        return `
+/queue simple
+add name=${queueName} target=${target} max-limit=${maxLimit} burst-limit=${burstLimit} burst-threshold=1M/1M burst-time=8s/8s
+
+/ip firewall filter
+add action=accept chain=input disabled=no protocol=icmp
+add action=drop chain=forward src-address=192.168.1.10 comment="Block IP"
+    `.trim();
     };
 
-    const copyToClipboard = () => {
+    const copyScript = () => {
         navigator.clipboard.writeText(generateScript());
         alert('Script disalin!');
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12">
-            <div ref={containerRef} className="max-w-3xl mx-auto px-6">
+        <div className="min-h-screen bg-gray-50 py-12" ref={containerRef}>
+            <div className="max-w-3xl mx-auto px-6">
                 <div className="bg-white p-8 rounded-xl shadow-lg">
                     <h1 className="text-3xl font-bold mb-2 text-center">MikroTik Script Generator</h1>
                     <p className="text-gray-600 mb-8 text-center">
-                        Buat script queue, firewall, hotspot dengan satu klik.
+                        Buat script queue, firewall, dan hotspot dengan cepat.
                     </p>
 
-                    <div className="mb-6">
-                        <label className="block text-sm font-medium mb-2">Jenis Script</label>
-                        <select
-                            value={scriptType}
-                            onChange={(e) => setScriptType(e.target.value)}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        >
-                            <option value="queue">Queue (Bandwidth)</option>
-                            <option value="firewall">Firewall (Block IP)</option>
-                            <option value="hotspot">Hotspot (User)</option>
-                        </select>
-                    </div>
-
-                    {scriptType !== 'hotspot' && (
-                        <div className="mb-6">
-                            <label className="block text-sm font-medium mb-2">IP Target</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label className="block text-sm font-medium mb-2">Nama Queue</label>
                             <input
                                 type="text"
-                                value={targetIp}
-                                onChange={(e) => setTargetIp(e.target.value)}
-                                placeholder="Contoh: 192.168.1.10"
+                                value={queueName}
+                                onChange={(e) => setQueueName(e.target.value)}
                                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                             />
                         </div>
-                    )}
+                        <div>
+                            <label className="block text-sm font-medium mb-2">Target</label>
+                            <input
+                                type="text"
+                                value={target}
+                                onChange={(e) => setTarget(e.target.value)}
+                                placeholder="Contoh: 192.168.1.0/24"
+                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            />
+                        </div>
+                    </div>
 
-                    {scriptType === 'queue' && (
-                        <div className="mb-6">
-                            <label className="block text-sm font-medium mb-2">Bandwidth (max-limit)</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label className="block text-sm font-medium mb-2">Max Limit</label>
                             <input
                                 type="text"
                                 value={maxLimit}
@@ -78,36 +73,30 @@ export default function MikroTikScriptGenerator() {
                                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                             />
                         </div>
-                    )}
-
-                    <div className="mb-6">
-                        <label className="block text-sm font-medium mb-2">Komentar (opsional)</label>
-                        <input
-                            type="text"
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            placeholder="Contoh: User-Home"
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        />
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button
-                            onClick={copyToClipboard}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition"
-                        >
-                            📋 Salin Script
-                        </button>
-                    </div>
-
-                    {generateScript() && (
-                        <div className="mt-6 p-4 bg-gray-100 rounded-lg">
-                            <p><strong>Script MikroTik:</strong></p>
-                            <pre className="mt-2 bg-black text-green-400 p-3 rounded text-xs overflow-x-auto">
-                                {generateScript()}
-                            </pre>
+                        <div>
+                            <label className="block text-sm font-medium mb-2">Burst Limit</label>
+                            <input
+                                type="text"
+                                value={burstLimit}
+                                onChange={(e) => setBurstLimit(e.target.value)}
+                                placeholder="Contoh: 2M/2M"
+                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            />
                         </div>
-                    )}
+                    </div>
+
+                    <button
+                        onClick={copyScript}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition mb-6"
+                    >
+                        📋 Salin Script
+                    </button>
+
+                    <div className="p-4 bg-gray-100 rounded-lg">
+                        <pre className="bg-black text-green-400 p-3 rounded text-xs overflow-x-auto">
+                            {generateScript()}
+                        </pre>
+                    </div>
                 </div>
             </div>
         </div>

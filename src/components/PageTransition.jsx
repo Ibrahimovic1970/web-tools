@@ -8,18 +8,16 @@ export default function PageTransition({ children }) {
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Animasi keluar halaman lama
             gsap.to(pageRef.current, {
                 opacity: 1,
                 y: 20,
                 duration: 0.4,
-                ease: "power2.in"
+                ease: "power2.in",
             });
 
-            // Animasi masuk halaman baru
             gsap.fromTo(pageRef.current,
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", delay: 0.2 }
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.1 }
             );
         }, pageRef);
 
@@ -27,7 +25,7 @@ export default function PageTransition({ children }) {
     }, [location.pathname]);
 
     return (
-        <div ref={pageRef} style={{ minHeight: '100vh' }}>
+        <div ref={pageRef} className="min-h-full">
             {children}
         </div>
     );

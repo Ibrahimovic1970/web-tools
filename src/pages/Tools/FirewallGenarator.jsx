@@ -8,7 +8,6 @@ export default function FirewallGenerator() {
     const containerRef = useRef();
 
     useEffect(() => {
-        // Animasi saat halaman muncul
         gsap.fromTo(containerRef.current,
             { opacity: 0, y: 30 },
             { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
@@ -29,8 +28,8 @@ export default function FirewallGenerator() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12">
-            <div ref={containerRef} className="max-w-3xl mx-auto px-6">
+        <div className="min-h-screen bg-gray-50 py-12" ref={containerRef}>
+            <div className="max-w-3xl mx-auto px-6">
                 <div className="bg-white p-8 rounded-xl shadow-lg">
                     <h1 className="text-3xl font-bold mb-2 text-center">Firewall Generator</h1>
                     <p className="text-gray-600 mb-8 text-center">

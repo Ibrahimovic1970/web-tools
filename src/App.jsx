@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
+import ToolsPage from './pages/ToolsPage';
 import QRCodeGenerator from './pages/Tools/QRCodeGenerator';
 import SubnetCalculator from './pages/Tools/SubnetCalculator';
 import PasswordGenerator from './pages/Tools/PasswordGenerator';
@@ -14,19 +15,20 @@ import PasswordStrengthChecker from './pages/Tools/PasswordStrengthChecker';
 import SuratIzinGenerator from './pages/Tools/SuratIzinGenerator';
 import TandaTanganGenerator from './pages/Tools/TandaTanganGenerator';
 import QRTugasGenerator from './pages/Tools/QRTugasGenerator';
-import PageTransition from './components/PageTransition';
 import KartuPelajarGenerator from './pages/Tools/KartuPelajarGenerator';
 import JadwalPelajaranGenerator from './pages/Tools/JadwalPelajaranGenerator';
+import PageTransition from './components/PageTransition';
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="flex flex-col min-h-screen bg-gray-50 text-gray-800">
+      <div className="flex flex-col min-h-screen">
         <Navbar />
-        <main className="flex-grow max-w-6xl mx-auto px-6 py-12">
+        <main className="flex-grow pt-16">
           <PageTransition>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/tools" element={<ToolsPage />} />
               <Route path="/tools/qrcode" element={<QRCodeGenerator />} />
               <Route path="/tools/subnet" element={<SubnetCalculator />} />
               <Route path="/tools/password" element={<PasswordGenerator />} />

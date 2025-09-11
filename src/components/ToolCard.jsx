@@ -5,21 +5,17 @@ export default function ToolCard({ title, desc, icon: Icon, path }) {
     const cardRef = useRef();
 
     useEffect(() => {
-        const el = cardRef.current;
-
-        // Animasi saat muncul
-        gsap.fromTo(el,
+        gsap.fromTo(cardRef.current,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
         );
 
-        // Hover effect
+        const el = cardRef.current;
         const onMouseEnter = () => {
-            gsap.to(el, { y: -5, boxShadow: "0 10px 25px rgba(0,0,0,0.1)", duration: 0.3 });
+            gsap.to(el, { y: -10, boxShadow: "0 20px 25px -5px rgba(0,0,0,0.1)", duration: 0.3 });
         };
-
         const onMouseLeave = () => {
-            gsap.to(el, { y: 0, boxShadow: "0 4px 6px rgba(0,0,0,0.1)", duration: 0.3 });
+            gsap.to(el, { y: 0, boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1)", duration: 0.3 });
         };
 
         el.addEventListener('mouseenter', onMouseEnter);
@@ -34,7 +30,7 @@ export default function ToolCard({ title, desc, icon: Icon, path }) {
     return (
         <div
             ref={cardRef}
-            className="bg-white p-6 rounded-xl border border-gray-200 cursor-pointer"
+            className="bg-white p-6 rounded-xl border border-gray-200 cursor-pointer transition"
             onClick={() => (window.location.href = path)}
         >
             <Icon className="text-3xl text-blue-600 mb-4" />

@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { QRCodeCanvas } from 'qrcode.react';
 import { gsap } from 'gsap';
 
 export default function QRTugasGenerator() {
@@ -13,20 +12,19 @@ export default function QRTugasGenerator() {
         );
     }, []);
 
-    const handleDownload = () => {
-        const canvas = document.querySelector('canvas');
-        if (canvas) {
-            const pngUrl = canvas.toDataURL('image/png');
-            const downloadLink = document.createElement('a');
-            downloadLink.href = pngUrl;
-            downloadLink.download = 'qrcode-tugas.png';
-            downloadLink.click();
-        }
+    const qrCodeUrl = link ? `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(link)}` : '';
+
+    const downloadQR = () => {
+        if (!qrCodeUrl) return;
+        const a = document.createElement('a');
+        a.href = qrCodeUrl;
+        a.download = 'qr-tugas.png';
+        a.click();
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12">
-            <div ref={containerRef} className="max-w-3xl mx-auto px-6">
+        <div className="min-h-screen bg-gray-50 py-12" ref={containerRef}>
+            <div className="max-w-3xl mx-auto px-6">
                 <div className="bg-white p-8 rounded-xl shadow-lg">
                     <h1 className="text-3xl font-bold mb-2 text-center">QR Code Tugas</h1>
                     <p className="text-gray-600 mb-8 text-center">
@@ -39,34 +37,22 @@ export default function QRTugasGenerator() {
                             type="url"
                             value={link}
                             onChange={(e) => setLink(e.target.value)}
-                            placeholder="Contoh: https://drive.google.com/file/d/12345"
+                            placeholder="https://drive.google.com/..."
                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         />
                     </div>
 
-                    <div className="flex justify-center mb-6 p-4 bg-white border rounded-lg">
-                        {link ? (
-                            <QRCodeCanvas value={link} size={200} level="H" />
-                        ) : (
-                            <div className="text-gray-500 text-center">Masukkan link tugas</div>
-                        )}
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button
-                            onClick={handleDownload}
-                            disabled={!link}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition disabled:opacity-50"
-                        >
-                            📥 Unduh QR Code
-                        </button>
-                        <button
-                            onClick={() => setLink('')}
-                            className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg transition"
-                        >
-                            Bersihkan
-                        </button>
-                    </div>
+                    {qrCodeUrl && (
+                        <div className="flex flex-col items-center mb-6">
+                            <img src={qrCodeUrl} alt="QR Code Tugas" className="border border-gray-300 p-2" />
+                            <button
+                                onClick={downloadQR}
+                                className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition"
+                            >
+                                📥 Download QR
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

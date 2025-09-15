@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
+import LogoSekolah from '../assets/Gambar.png'; 
+
 export default function SuratIzinGenerator() {
   const [nama, setNama] = useState('');
   const [kelas, setKelas] = useState('');
@@ -144,7 +146,7 @@ export default function SuratIzinGenerator() {
         <body>
           <div class="container">
             <div class="header">
-              <img src="/pages/assets/LogoUtama.png" alt="Logo Sekolah" class="logo" />
+              <img src="${LogoSekolah}" alt="Logo Sekolah" class="logo" />
               <div>
                 <div class="school-info">SMK TI BAZMA</div>
                 <div class="school-subtitle">Jl. Raya Cikampak Cicadas, RT.1/RW.1, Cicadas, Kec. Ciampea, Kabupaten Bogor, Jawa Barat | Telp: 0811-1144-339</div>

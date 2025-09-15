@@ -136,7 +136,7 @@ export default function KartuPelajarGenerator() {
                                 {/* Header */}
                                 <div className="bg-blue-600 text-white p-4 text-center">
                                     <h3 className="font-bold text-lg">KARTU PELAJAR</h3>
-                                    <p className="text-sm">SMK NEGERI 1 TEKNOLOGI INFORMATIKA</p>
+                                    <p className="text-sm">SMK TI BAZMA</p>
                                 </div>
 
                                 {/* Foto */}

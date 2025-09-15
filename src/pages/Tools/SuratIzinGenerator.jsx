@@ -146,8 +146,8 @@ export default function SuratIzinGenerator() {
             <div class="header">
               <img src="/pages/assets/LogoUtama.png" alt="Logo Sekolah" class="logo" />
               <div>
-                <div class="school-info">SMK NEGERI 1 TEKNOLOGI INFORMATIKA</div>
-                <div class="school-subtitle">Jl. Teknologi No. 1, Kota Digital | Telp: (021) 1234-5678</div>
+                <div class="school-info">SMK TI BAZMA</div>
+                <div class="school-subtitle">Jl. Raya Cikampak Cicadas, RT.1/RW.1, Cicadas, Kec. Ciampea, Kabupaten Bogor, Jawa Barat | Telp: 0811-1144-339</div>
               </div>
             </div>
             <div class="nomor-surat">
@@ -172,7 +172,7 @@ export default function SuratIzinGenerator() {
               ${nama}
             </div>
             <div class="footer">
-              Dokumen ini sah jika dicetak dari NetTool.id
+              Dokumen ini sah jika dicetak dari SMK TI BAZMA
             </div>
           </div>
           <script>

@@ -112,7 +112,7 @@ export default function JadwalPelajaranGenerator() {
                             >
                                 <div className="bg-blue-600 text-white p-4 text-center">
                                     <h3 className="font-bold text-lg">JADWAL PELAJARAN</h3>
-                                    <p className="text-sm">SMK NEGERI 1 TEKNOLOGI INFORMATIKA</p>
+                                    <p className="text-sm">SMK TI BAZMA</p>
                                 </div>
                                 {Object.entries(hari).map(([day, classes]) =>
                                     classes.length > 0 && (
